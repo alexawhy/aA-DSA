@@ -126,20 +126,20 @@ function flatten(data) {
 // Example:
 //
 // let desktop = {
-//     '/images': {
-//         'app_academy_logo.svg': null,
-//         '/parks': {
-//             'yosemite.jpeg': null,
-//             'acadia.jpeg': null,
-//             'yellowstone.png': null
-//         },
-//         '/pets': {
-//             'trixie_lou.jpeg': null,
-//             'rolo.jpeg': null,
-//             'opal.jpeg': null,
-//             'diana.jpeg': null,
-//         }
-//     },
+    // '/images': {
+    //     'app_academy_logo.svg': null,
+    //     '/parks': {
+    //         'yosemite.jpeg': null,
+    //         'acadia.jpeg': null,
+    //         'yellowstone.png': null
+    //     },
+    //     '/pets': {
+    //         'trixie_lou.jpeg': null,
+    //         'rolo.jpeg': null,
+    //         'opal.jpeg': null,
+    //         'diana.jpeg': null,
+    //     }
+    // },
 //     '/music': {
 //         'hey_programmers.mp3': null,
 //         '/genres': {
@@ -159,7 +159,10 @@ function flatten(data) {
 // fileFinder(desktop, 'everlong.flac');            // => true
 // fileFinder(desktop, 'sequoia.jpeg');             // => false
 function fileFinder(directories, targetFile) {
-
+	for (let key in directories) {
+		if (key === targetFile || fileFinder(directories[key], targetFile)) return true;
+	}
+	return false;
 }
 
 
@@ -173,7 +176,14 @@ function fileFinder(directories, targetFile) {
 // pathFinder(desktop, 'everlong.flac'));       // => '/music/genres/rock/everlong.flac'
 // pathFinder(desktop, 'honeybadger.png'));     // => null
 function pathFinder(directories, targetFile) {
-
+	for (let key in directories) {
+		if (key === targetFile) {
+			return `/${targetFile}`;
+		} else if (pathFinder(directories[key], targetFile) !== null) {
+			return key + pathFinder(directories[key], targetFile);
+		}
+	}
+	return null;
 }
 
 
